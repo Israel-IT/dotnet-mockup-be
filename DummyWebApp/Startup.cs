@@ -55,7 +55,6 @@ namespace DummyWebApp
                 .AddSingleton<IResetPasswordTokenProvider, ResetPasswordTokenProvider>()
                 .AddIdentityCore<User>()
                 .AddUserManager<UserManager<User>>()
-                // .AddRoles<IdentityRole<int>>()
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .Services
@@ -142,6 +141,11 @@ namespace DummyWebApp
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetAssembly(GetType())?.GetName().Name);
+            });
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

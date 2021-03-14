@@ -14,6 +14,14 @@
       </PackageReference>
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
     </ItemGroup>
+    
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DocumentationFile>bin\Debug\DummyWebApp.BLL.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DocumentationFile>bin\Release\DummyWebApp.BLL.xml</DocumentationFile>
+    </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\DummyWebApp.Core\DummyWebApp.Core.csproj" />
