@@ -4,7 +4,6 @@ namespace DummyWebApp
     using Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -36,10 +35,8 @@ namespace DummyWebApp
             }
 
             app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(_ =>
             {
-                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello World!"); });
             });
         }
     }

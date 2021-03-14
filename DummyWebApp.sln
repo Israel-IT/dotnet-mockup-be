@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyWebApp.BLL", "DummyWeb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyWebApp.DAL", "DummyWebApp.DAL\DummyWebApp.DAL.csproj", "{504FA3E9-90AE-4C2A-BE7E-121299D72252}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyWebApp.Core", "DummyWebApp.Core\DummyWebApp.Core.csproj", "{22AE6D46-E06E-4CE5-883D-EE7E2E4B7F71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{504FA3E9-90AE-4C2A-BE7E-121299D72252}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{504FA3E9-90AE-4C2A-BE7E-121299D72252}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{504FA3E9-90AE-4C2A-BE7E-121299D72252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22AE6D46-E06E-4CE5-883D-EE7E2E4B7F71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22AE6D46-E06E-4CE5-883D-EE7E2E4B7F71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22AE6D46-E06E-4CE5-883D-EE7E2E4B7F71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22AE6D46-E06E-4CE5-883D-EE7E2E4B7F71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
