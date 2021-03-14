@@ -8,20 +8,23 @@ namespace DummyWebApp.BLL.Services
     using BorsaLive.Core.Models;
     using BorsaLive.Core.Models.Abstraction;
     using Core.ResultConstants;
-    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Options;
+    using Options;
 
     public class EmailService : IEmailService
     {
         private readonly SmtpClient _smtpClient;
-        private readonly IConfiguration _configuration;
+        private readonly EmailOptions _emailOptions;
 
-        public EmailService(IConfiguration configuration)
+        public EmailService(IOptions<EmailOptions> emailOptions)
         {
-            _configuration = configuration;
-            _smtpClient = new SmtpClient(_configuration["EmailSettings:Host"], int.Parse(_configuration["EmailSettings:Port"]))
+            ValidateEmailOptions(emailOptions.Value);
+
+            _emailOptions = emailOptions.Value;
+            _smtpClient = new SmtpClient(_emailOptions.Host, _emailOptions.Port)
             {
                 EnableSsl = true,
-                Credentials = new NetworkCredential(_configuration["EmailSettings:Email"], _configuration["EmailSettings:Password"])
+                Credentials = new NetworkCredential(_emailOptions.Email, _emailOptions.Password)
             };
         }
 
@@ -29,7 +32,7 @@ namespace DummyWebApp.BLL.Services
         {
             try
             {
-                await _smtpClient.SendMailAsync(_configuration["EmailSettings:Email"], to, subject, body);
+                await _smtpClient.SendMailAsync(_emailOptions.Email!, to, subject, body);
 
                 return Result.CreateSuccess();
             }
@@ -37,6 +40,18 @@ namespace DummyWebApp.BLL.Services
             {
                 return Result.CreateFailed(CommonResultConstants.Unexpected, e);
             }
+        }
+
+        private static void ValidateEmailOptions(EmailOptions emailOptions)
+        {
+            if (string.IsNullOrWhiteSpace(emailOptions.Email))
+                throw new ArgumentException($"Please specify email in {nameof(EmailOptions)}");
+            if(string.IsNullOrWhiteSpace(emailOptions.Host))
+                throw new ArgumentException($"Please specify host in {nameof(EmailOptions)}");
+            if(string.IsNullOrWhiteSpace(emailOptions.Password))
+                throw new ArgumentException($"Please specify password in {nameof(EmailOptions)}");
+            if(emailOptions.Port > 65535 || emailOptions.Port < 0)
+                throw new ArgumentException($"Please specify valid port in {nameof(EmailOptions)}");
         }
     }
 }

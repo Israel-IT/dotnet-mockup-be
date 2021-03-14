@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <CodeAnalysisRuleSet>../Solution.ruleset</CodeAnalysisRuleSet>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

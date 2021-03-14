@@ -79,7 +79,7 @@
                 if (!await _userManager.CheckPasswordAsync(user, loginUserDto.Password))
                     return Result<TokenDto>.CreateFailed(AuthServiceResultConstants.InvalidUserNameOrPassword);
 
-                return Result<TokenDto>.CreateSuccess(await GenerateTokenForUserAsync(user));
+                return Result<TokenDto>.CreateSuccess(GenerateTokenForUser(user));
             }
             catch (Exception e)
             {
@@ -184,7 +184,7 @@
             if (user == null)
                 return Result<TokenDto>.CreateFailed(AuthServiceResultConstants.UserNotFound);
 
-            return Result<TokenDto>.CreateSuccess(await GenerateTokenForUserAsync(user));
+            return Result<TokenDto>.CreateSuccess(GenerateTokenForUser(user));
         }
 
         private static ClaimsIdentity GetRefreshClaimsIdentity(User user)
@@ -194,7 +194,7 @@
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString())
             });
 
-        private async Task<ClaimsIdentity> GetClaimsIdentityAsync(User user)
+        private ClaimsIdentity GetClaimsIdentity(User user)
         {
             var claims = new List<Claim>
             {
@@ -202,18 +202,15 @@
                 new(ClaimTypes.Email, user.Email)
             };
 
-            claims.AddRange((await _userManager.GetRolesAsync(user))
-                .Select(role => new Claim(ClaimTypes.Role, role)));
-
             if (user.PhoneNumber != null)
                 claims.Add(new Claim(ClaimTypes.MobilePhone, user.PhoneNumber));
 
             return new ClaimsIdentity(claims, "Token");
         }
 
-        private async Task<TokenDto> GenerateTokenForUserAsync(User user)
+        private TokenDto GenerateTokenForUser(User user)
         {
-            var accessToken = await GenerateTokenAsync(user);
+            var accessToken = GenerateToken(user);
             var refreshToken = GenerateRefreshToken(user);
             var jwtHandler = new JwtSecurityTokenHandler();
 
@@ -258,9 +255,9 @@
             }
         }
 
-        private async Task<JwtSecurityToken> GenerateTokenAsync(User user)
+        private JwtSecurityToken GenerateToken(User user)
         {
-            var claims = await GetClaimsIdentityAsync(user);
+            var claims = GetClaimsIdentity(user);
 
             return new JwtSecurityToken(
                 _configuration["Token:Issuer"],
