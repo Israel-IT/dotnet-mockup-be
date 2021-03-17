@@ -17,6 +17,7 @@ namespace DummyWebApp
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using SharedResources;
 
     public class Startup
     {
@@ -47,11 +48,13 @@ namespace DummyWebApp
                 .AddIdentity()
                 .Configure<EmailOptions>(_configuration.GetSection(nameof(EmailOptions)))
                 .AddSwagger()
+                .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddControllers(options =>
                 {
                     options.Filters.Add<ErrorableResultFilterAttribute>();
                     options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
                 })
+                .AddDataAnnotationsLocalization(options => options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)))
                 .AddJsonOptions(options => options
                     .JsonSerializerOptions
                     .Converters
@@ -66,6 +69,10 @@ namespace DummyWebApp
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRequestLocalization(options => options
+                .AddSupportedCultures("en", "uk")
+                .SetDefaultCulture("en")
+                .AddSupportedUICultures("en", "uk"));
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

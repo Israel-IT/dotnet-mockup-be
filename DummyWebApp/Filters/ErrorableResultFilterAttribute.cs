@@ -8,6 +8,7 @@ namespace DummyWebApp.Filters
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Localization;
     using Microsoft.Extensions.Logging;
 
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "ASP NET framework will instantiate")]
@@ -19,13 +20,14 @@ namespace DummyWebApp.Filters
         {
             if (context.Result is ErrorableActionResult actionResult)
             {
-                var error = new SerializableError
-                {
-                    { Errors, actionResult.Result.Messages }
-                };
-
                 if (!actionResult.Result.Success)
                 {
+                    var localizer = context.HttpContext.RequestServices.GetRequiredService<IStringLocalizer<ErrorableResultFilterAttribute>>();
+                    var error = new SerializableError
+                    {
+                        { Errors, actionResult.Result.Messages.Select(m => localizer[m].Value) }
+                    };
+
                     context.Result = new BadRequestObjectResult(error);
                     LogFailureResult(actionResult.Result, context
                         .HttpContext

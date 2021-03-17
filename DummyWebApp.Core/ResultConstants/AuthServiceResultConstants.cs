@@ -31,25 +31,5 @@
         /// Represents message when user sent valid code for resetting, but it is already expired.
         /// </summary>
         public const string ExpiredResetPasswordToken = "EXPIRED_RESET_TOKEN";
-
-        /// <summary>
-        /// Represents message when google access token is not valid.
-        /// </summary>
-        public const string InvalidGoogleToken = "IVALID_GOOGLE_TOKEN";
-
-        /// <summary>
-        /// Represents message when facebook access token is not valid.
-        /// </summary>
-        public const string InvalidFacebookToken = "IVALID_FACEBOOK_TOKEN";
-
-        /// <summary>
-        /// Represents message when apple access token is not valid.
-        /// </summary>
-        public const string InvalidAppleToken = "IVALID_APPLE_TOKEN";
-
-        /// <summary>
-        /// Represents message when device token is not relative for current user.
-        /// </summary>
-        public const string InvalidDeviceToken = "IVALID_DEVICE_TOKEN";
     }
 }

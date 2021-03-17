@@ -30,4 +30,28 @@
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Filters.ErrorableResultFilterAttribute.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Filters.ErrorableResultFilterAttribute.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Filters.ErrorableResultFilterAttribute.uk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Filters.ErrorableResultFilterAttribute.uk.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Filters.ErrorableResultFilterAttribute.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Controllers.AuthController.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Filters.ErrorableResultFilterAttribute.uk.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Filters.ErrorableResultFilterAttribute.uk.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
