@@ -1,32 +1,22 @@
 namespace DummyWebApp
 {
-    using System;
-    using System.IO;
     using System.Net.Mime;
     using System.Reflection;
-    using System.Text;
     using System.Text.Json.Serialization;
-    using BLL.Dtos.Auth;
     using BLL.Options;
     using BLL.Services;
     using BLL.Services.Abstraction;
-    using Core.ResultConstants;
     using DAL;
-    using DAL.Entities;
     using Extensions;
     using Filters;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using Microsoft.IdentityModel.Tokens;
-    using Microsoft.OpenApi.Models;
 
     public class Startup
     {
@@ -53,75 +43,10 @@ namespace DummyWebApp
                 .AddScoped<IAuthService, AuthService>()
                 .AddSingleton<IEmailService, EmailService>()
                 .AddSingleton<IResetPasswordTokenProvider, ResetPasswordTokenProvider>()
-                .AddIdentityCore<User>()
-                .AddUserManager<UserManager<User>>()
-                .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .Services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Audience = _configuration["Token:Audience"];
-                    options.RequireHttpsMetadata = bool.Parse(_configuration["Token:RequireHttpsMetadata"]);
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateActor = bool.Parse(_configuration["Token:ValidateActor"]),
-                        ValidateAudience = bool.Parse(_configuration["Token:ValidateAudience"]),
-                        ValidateLifetime = bool.Parse(_configuration["Token:ValidateLifetime"]),
-                        ValidateIssuerSigningKey = bool.Parse(_configuration["Token:ValidateIssuerSigningKey"]),
-                        ValidIssuer = _configuration["Token:Issuer"],
-                        ValidAudience = _configuration["Token:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"]))
-                    };
-                })
-                .Services
-                .Configure<IdentityOptions>(options =>
-                {
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequiredLength = IdentityPasswordConstants.RequiredLength;
-                    options.Password.RequiredUniqueChars = 0;
-                    options.User.RequireUniqueEmail = true;
-                })
+                .AddJwtBearerAuth(_configuration)
+                .AddIdentity()
                 .Configure<EmailOptions>(_configuration.GetSection(nameof(EmailOptions)))
-                .AddSwaggerGen(options =>
-                {
-                    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                    {
-                        In = ParameterLocation.Header,
-                        Description = "Please insert JWT with Bearer into field",
-                        Name = "Authorization",
-                        Type = SecuritySchemeType.ApiKey,
-                        Scheme = JwtBearerDefaults.AuthenticationScheme,
-                        BearerFormat = "JWT"
-                    });
-                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                    {
-                        {
-                            new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = JwtBearerDefaults.AuthenticationScheme
-                                }
-                            },
-                            Array.Empty<string>()
-                        }
-                    });
-                })
-                .AddSwaggerGen(options =>
-                {
-                    options.SchemaFilter<IgnoreReadOnlySchemaFilter>();
-                    options.IncludeXmlComments(Path.Combine(
-                        AppContext.BaseDirectory,
-                        $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
-                    options.IncludeXmlComments(Path.Combine(
-                        AppContext.BaseDirectory,
-                        $"{Assembly.GetAssembly(typeof(LoginUserDto))?.GetName().Name}.xml"));
-                })
+                .AddSwagger()
                 .AddControllers(options =>
                 {
                     options.Filters.Add<ErrorableResultFilterAttribute>();
