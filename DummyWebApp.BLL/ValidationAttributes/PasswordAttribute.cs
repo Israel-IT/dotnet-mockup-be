@@ -3,6 +3,8 @@ namespace DummyWebApp.BLL.ValidationAttributes
     using System;
     using System.ComponentModel.DataAnnotations;
     using Core.ResultConstants;
+    using Microsoft.Extensions.DependencyInjection;
+    using ValidationConstants.Auth;
 
     [AttributeUsage(AttributeTargets.Property)]
     public class PasswordAttribute : ValidationAttribute
@@ -13,10 +15,10 @@ namespace DummyWebApp.BLL.ValidationAttributes
             var length = new MinLengthAttribute(IdentityPasswordConstants.RequiredLength);
 
             if (!required.IsValid(value))
-                return required.GetValidationResult(value, validationContext);
+                return new ValidationResult(SharedValidationConstants.RequiredPassword);
 
             return !length.IsValid(value)
-                ? length.GetValidationResult(value, validationContext)
+                ? new ValidationResult(SharedValidationConstants.InvalidPasswordLength)
                 : ValidationResult.Success;
         }
     }

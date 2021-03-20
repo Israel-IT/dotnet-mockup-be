@@ -2,6 +2,7 @@ namespace DummyWebApp.BLL.Dtos.Auth
 {
     using System.ComponentModel.DataAnnotations;
     using ValidationAttributes;
+    using ValidationConstants.Auth;
 
     public class ResetPasswordDto
     {
@@ -15,21 +16,21 @@ namespace DummyWebApp.BLL.Dtos.Auth
         /// <summary>
         /// Gets email of user.
         /// </summary>
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = SharedValidationConstants.RequiredEmail)]
+        [EmailAddress(ErrorMessage = SharedValidationConstants.InvalidEmail)]
         public string Email { get; }
 
         /// <summary>
         /// Gets new password for resetting.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = ResetPasswordValidationConstants.NewPasswordRequired)]
         [Password]
         public string NewPassword { get; }
 
         /// <summary>
         /// Gets reset password code.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = ResetPasswordValidationConstants.TokenRequired)]
         public string Token { get; }
     }
 }

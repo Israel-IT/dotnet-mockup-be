@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using ValidationAttributes;
+    using ValidationConstants.Auth;
 
     public class RegisterUserDto
     {
@@ -14,15 +15,15 @@
         /// <summary>
         /// Gets user email.
         /// </summary>
-        [EmailAddress]
-        [Required]
+        [EmailAddress(ErrorMessage = SharedValidationConstants.InvalidEmail)]
+        [Required(ErrorMessage = SharedValidationConstants.RequiredEmail)]
         public string Email { get; }
 
         /// <summary>
         /// Gets user password.
         /// </summary>
         [Password]
-        [Required]
+        [Required(ErrorMessage = SharedValidationConstants.RequiredPassword)]
         public string Password { get; }
     }
 }

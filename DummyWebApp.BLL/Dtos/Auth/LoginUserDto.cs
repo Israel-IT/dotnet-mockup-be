@@ -3,6 +3,7 @@ namespace DummyWebApp.BLL.Dtos.Auth
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
     using ValidationAttributes;
+    using ValidationConstants.Auth;
 
     public class LoginUserDto
     {
@@ -15,7 +16,7 @@ namespace DummyWebApp.BLL.Dtos.Auth
         /// <summary>
         /// Gets user email.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = SharedValidationConstants.RequiredEmail)]
         [DataMember]
         public string Email { get; }
 
@@ -24,7 +25,7 @@ namespace DummyWebApp.BLL.Dtos.Auth
         /// </summary>
         [Password]
         [DataMember]
-        [Required]
+        [Required(ErrorMessage = SharedValidationConstants.RequiredPassword)]
         public string Password { get; }
     }
 }

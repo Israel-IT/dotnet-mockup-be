@@ -2,6 +2,7 @@ namespace DummyWebApp.BLL.Dtos.Auth
 {
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
+    using ValidationConstants.Auth;
 
     public class RefreshTokenDto
     {
@@ -14,7 +15,7 @@ namespace DummyWebApp.BLL.Dtos.Auth
         /// Gets JWT refresh token.
         /// </summary>
         [DataMember]
-        [Required]
+        [Required(ErrorMessage = RefreshTokenValidationConstants.RefreshTokenIsRequired)]
         public string RefreshToken { get; }
     }
 }

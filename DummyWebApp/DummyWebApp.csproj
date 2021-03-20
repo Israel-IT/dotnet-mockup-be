@@ -39,6 +39,14 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Filters.ErrorableResultFilterAttribute.uk.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\SharedResources.SharedResource.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.SharedResource.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\SharedResources.SharedResource.uk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.SharedResource.uk.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -51,6 +59,16 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Filters.ErrorableResultFilterAttribute.uk.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\SharedResources.SharedResource.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SharedResources.SharedResource.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\SharedResources.SharedResource.uk.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SharedResources.SharedResource.uk.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

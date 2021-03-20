@@ -1,6 +1,7 @@
 namespace DummyWebApp.BLL.Dtos.Auth
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class ResetToken
     {
@@ -10,8 +11,10 @@ namespace DummyWebApp.BLL.Dtos.Auth
             Code = code;
         }
 
+        [Required]
         public DateTime ExpireTime { get; }
 
+        [Required]
         public string Code { get; }
     }
 }
