@@ -5,6 +5,7 @@ namespace DummyWebApp.Extensions
     using System.Reflection;
     using System.Text;
     using BLL.Dtos.Auth;
+    using BLL.Options;
     using Core.ResultConstants;
     using DAL;
     using DAL.Entities;
@@ -35,7 +36,19 @@ namespace DummyWebApp.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:Key"]))
                     };
                 })
-                .Services;
+                .Services
+                .Configure<AccessTokenOptions>(options =>
+                {
+                    options.Audience = configuration["Token:Audience"];
+                    options.Issuer = configuration["Token:Issuer"];
+                    options.Key = configuration["Token:Key"];
+                    options.ValidateActor = bool.Parse(configuration["Token:ValidateActor"]);
+                    options.ValidateAudience = bool.Parse(configuration["Token:ValidateAudience"]);
+                    options.ValidateLifetime = bool.Parse(configuration["Token:ValidateLifetime"]);
+                    options.AccessTokenLifetime = int.Parse(configuration["Token:AccessTokenLifetime"]);
+                    options.RefreshTokenLifetime = int.Parse(configuration["Token:RefreshTokenLifetime"]);
+                    options.ValidateIssuerSigningKey = bool.Parse(configuration["Token:ValidateIssuerSigningKey"]);
+                });
 
         public static IServiceCollection AddSwagger(this IServiceCollection serviceCollection)
             => serviceCollection.AddSwaggerGen(options =>

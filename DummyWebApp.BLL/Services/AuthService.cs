@@ -18,26 +18,28 @@
     using Dtos.Auth;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
+    using Options;
 
     public class AuthService : IAuthService
     {
         private readonly UserManager<User> _userManager;
-        private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
         private readonly IResetPasswordTokenProvider _resetPasswordTokenProvider;
+        private readonly AccessTokenOptions _tokenOptions;
 
         public AuthService(
             UserManager<User> userManager,
-            IConfiguration configuration,
             IEmailService emailService,
-            IResetPasswordTokenProvider resetPasswordTokenProvider)
+            IResetPasswordTokenProvider resetPasswordTokenProvider,
+            IOptions<AccessTokenOptions> tokenOption)
         {
+            ValidateTokenOptions(tokenOption.Value);
             _userManager = userManager;
-            _configuration = configuration;
             _emailService = emailService;
             _resetPasswordTokenProvider = resetPasswordTokenProvider;
+            _tokenOptions = tokenOption.Value;
         }
 
         public async Task<IResult> RegisterUserAsync(RegisterUserDto registerUserDto, CancellationToken cancellationToken)
@@ -179,7 +181,7 @@
             if (principalResult.Data.Item2.Subject == null)
                 return Result<TokenDto>.CreateFailed(AuthServiceResultConstants.InvalidRefreshToken);
 
-            var user = await _userManager.FindByIdAsync(principalResult.Data.Item2.Subject);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == int.Parse(principalResult.Data.Item2.Subject));
 
             if (user == null)
                 return Result<TokenDto>.CreateFailed(AuthServiceResultConstants.UserNotFound);
@@ -193,6 +195,16 @@
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString())
             });
+
+        private static void ValidateTokenOptions(AccessTokenOptions accessTokenOptions)
+        {
+            if(string.IsNullOrWhiteSpace(accessTokenOptions.Audience))
+                throw new ArgumentException($"Please specify {nameof(accessTokenOptions.Audience)}", nameof(accessTokenOptions.Audience));
+            if(string.IsNullOrWhiteSpace(accessTokenOptions.Issuer))
+                throw new ArgumentException($"Please specify {nameof(accessTokenOptions.Issuer)}", nameof(accessTokenOptions.Issuer));
+            if(string.IsNullOrWhiteSpace(accessTokenOptions.Key))
+                throw new ArgumentException($"Please specify {nameof(accessTokenOptions.Key)}", nameof(accessTokenOptions.Key));
+        }
 
         private ClaimsIdentity GetClaimsIdentity(User user)
         {
@@ -230,13 +242,13 @@
                         token,
                         new TokenValidationParameters
                         {
-                            ValidateActor = bool.Parse(_configuration["Token:ValidateActor"]),
-                            ValidateAudience = bool.Parse(_configuration["Token:ValidateAudience"]),
-                            ValidateLifetime = bool.Parse(_configuration["Token:ValidateLifetime"]),
-                            ValidateIssuerSigningKey = bool.Parse(_configuration["Token:ValidateIssuerSigningKey"]),
-                            ValidIssuer = _configuration["Token:Issuer"],
-                            ValidAudience = _configuration["Token:Audience"],
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"]))
+                            ValidateActor = _tokenOptions.ValidateActor,
+                            ValidateAudience = _tokenOptions.ValidateAudience,
+                            ValidateLifetime = _tokenOptions.ValidateLifetime,
+                            ValidateIssuerSigningKey = _tokenOptions.ValidateIssuerSigningKey,
+                            ValidIssuer = _tokenOptions.Issuer,
+                            ValidAudience = _tokenOptions.Audience,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.Key!))
                         },
                         out var securityToken);
 
@@ -260,11 +272,11 @@
             var claims = GetClaimsIdentity(user);
 
             return new JwtSecurityToken(
-                _configuration["Token:Issuer"],
-                _configuration["Token:Audience"],
+                _tokenOptions.Issuer,
+                _tokenOptions.Audience,
                 notBefore: DateTime.UtcNow,
                 claims: claims.Claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(int.Parse(_configuration["Token:AccessTokenLifetime"]))),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(_tokenOptions.AccessTokenLifetime)),
                 signingCredentials: GetSignInCredentials());
         }
 
@@ -273,17 +285,17 @@
             var claims = GetRefreshClaimsIdentity(user);
 
             return new JwtSecurityToken(
-                _configuration["Token:Issuer"],
-                _configuration["Token:Audience"],
+                _tokenOptions.Issuer,
+                _tokenOptions.Audience,
                 notBefore: DateTime.UtcNow,
                 claims: claims.Claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(int.Parse(_configuration["Token:RefreshTokenLifetime"]))),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(_tokenOptions.RefreshTokenLifetime)),
                 signingCredentials: GetSignInCredentials());
         }
 
         private SigningCredentials GetSignInCredentials()
             => new(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"])),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.Key!)),
                 SecurityAlgorithms.HmacSha256);
     }
 }
