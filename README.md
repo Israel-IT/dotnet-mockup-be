@@ -4,6 +4,7 @@ This is a mock-up project, that will help you to create project from scratch. Yo
 - **DummyWebApp** - Presentation layer
 - **DummyWebApp.BLL** - Application layer
 - **DummyWebApp.DAL**  - Data layer
+- - **DummyWebApp.Core** - contains common information
 #### Notes
 This project uses `StyleCop.Analyzer` library that will help you stick to C# code convention, but **Resharper** should be enabled in your IDE. All rules is located in `/Solution.ruleset` ruleset file.
 More information about this library you can find [here](https://github.com/DotNetAnalyzers/StyleCopAnalyzers "here")
