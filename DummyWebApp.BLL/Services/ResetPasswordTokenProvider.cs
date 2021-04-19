@@ -4,10 +4,10 @@ namespace DummyWebApp.BLL.Services
     using System.Collections.Concurrent;
     using System.Linq;
     using Abstraction;
-    using BorsaLive.Core.Models.Abstraction.Generics;
-    using BorsaLive.Core.Models.Generics;
     using Core.ResultConstants;
     using Dtos.Auth;
+    using ResultModel.Abstraction.Generics;
+    using ResultModel.Generics;
 
     public class ResetPasswordTokenProvider : IResetPasswordTokenProvider
     {

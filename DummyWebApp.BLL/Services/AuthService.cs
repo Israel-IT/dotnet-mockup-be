@@ -9,10 +9,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Abstraction;
-    using BorsaLive.Core.Models;
-    using BorsaLive.Core.Models.Abstraction;
-    using BorsaLive.Core.Models.Abstraction.Generics;
-    using BorsaLive.Core.Models.Generics;
     using Core.ResultConstants;
     using DAL.Entities;
     using Dtos.Auth;
@@ -21,6 +17,10 @@
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
     using Options;
+    using ResultModel;
+    using ResultModel.Abstraction;
+    using ResultModel.Abstraction.Generics;
+    using ResultModel.Generics;
 
     public class AuthService : IAuthService
     {

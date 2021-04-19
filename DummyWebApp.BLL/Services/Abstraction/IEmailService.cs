@@ -1,7 +1,7 @@
 namespace DummyWebApp.BLL.Services.Abstraction
 {
     using System.Threading.Tasks;
-    using BorsaLive.Core.Models.Abstraction;
+    using ResultModel.Abstraction;
 
     public interface IEmailService
     {

@@ -3,8 +3,8 @@ namespace DummyWebApp.Filters
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using ActionResults;
-    using BorsaLive.Core.Models.Abstraction;
-    using BorsaLive.Core.Models.Abstraction.Generics;
+    using BLL.ResultModel.Abstraction;
+    using BLL.ResultModel.Abstraction.Generics;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.Extensions.DependencyInjection;

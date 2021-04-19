@@ -1,6 +1,6 @@
 namespace DummyWebApp.ActionResults
 {
-    using BorsaLive.Core.Models.Abstraction;
+    using BLL.ResultModel.Abstraction;
     using Microsoft.AspNetCore.Mvc;
 
     public class ErrorableActionResult : ActionResult

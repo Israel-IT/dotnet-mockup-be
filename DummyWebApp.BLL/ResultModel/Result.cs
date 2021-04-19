@@ -1,4 +1,4 @@
-﻿namespace BorsaLive.Core.Models
+﻿namespace DummyWebApp.BLL.ResultModel
 {
     using System;
     using System.Collections.Generic;

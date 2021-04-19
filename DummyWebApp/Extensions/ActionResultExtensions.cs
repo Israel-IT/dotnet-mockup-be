@@ -1,7 +1,7 @@
 ﻿namespace DummyWebApp.Extensions
 {
     using ActionResults;
-    using BorsaLive.Core.Models.Abstraction;
+    using BLL.ResultModel.Abstraction;
     using Microsoft.AspNetCore.Mvc;
 
     public static class ActionResultExtensions

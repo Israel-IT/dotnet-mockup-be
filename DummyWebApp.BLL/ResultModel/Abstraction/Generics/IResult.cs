@@ -1,4 +1,4 @@
-﻿namespace BorsaLive.Core.Models.Abstraction.Generics
+﻿namespace DummyWebApp.BLL.ResultModel.Abstraction.Generics
 {
     public interface IResult<out TData> : IResult
     {

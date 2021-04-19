@@ -2,9 +2,9 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using BorsaLive.Core.Models.Abstraction;
-    using BorsaLive.Core.Models.Abstraction.Generics;
     using Dtos.Auth;
+    using ResultModel.Abstraction;
+    using ResultModel.Abstraction.Generics;
 
     public interface IAuthService
     {

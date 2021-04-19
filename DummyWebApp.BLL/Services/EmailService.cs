@@ -5,11 +5,11 @@ namespace DummyWebApp.BLL.Services
     using System.Net.Mail;
     using System.Threading.Tasks;
     using Abstraction;
-    using BorsaLive.Core.Models;
-    using BorsaLive.Core.Models.Abstraction;
     using Core.ResultConstants;
     using Microsoft.Extensions.Options;
     using Options;
+    using ResultModel;
+    using ResultModel.Abstraction;
 
     public class EmailService : IEmailService
     {

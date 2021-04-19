@@ -1,7 +1,7 @@
 namespace DummyWebApp.BLL.Services.Abstraction
 {
-    using BorsaLive.Core.Models.Abstraction.Generics;
     using Dtos.Auth;
+    using ResultModel.Abstraction.Generics;
 
     public interface IResetPasswordTokenProvider
     {

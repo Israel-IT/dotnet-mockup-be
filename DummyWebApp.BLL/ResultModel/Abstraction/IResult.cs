@@ -1,4 +1,4 @@
-﻿namespace BorsaLive.Core.Models.Abstraction
+﻿namespace DummyWebApp.BLL.ResultModel.Abstraction
 {
     using System;
     using System.Collections.Generic;
