@@ -32,6 +32,49 @@ This project represents Application Layer, that controls an application’s func
     }
 ```
 
+##### Implementation of `ErrorableResultFilterAttribute` that uses `IResult` and `IResult<T>`
+
+```csharp
+ublic class ErrorableResultFilterAttribute : ResultFilterAttribute
+    {
+        private const string Errors = nameof(Errors);
+
+        public override void OnResultExecuting(ResultExecutingContext context)
+        {
+            if (context.Result is ErrorableActionResult actionResult)
+            {
+                if (!actionResult.Result.Success)
+                {
+                    var localizer = context.HttpContext.RequestServices.GetRequiredService<IStringLocalizer<ErrorableResultFilterAttribute>>();
+                    var error = new SerializableError
+                    {
+                        { Errors, actionResult.Result.Messages.Select(m => localizer[m].Value) }
+                    };
+
+                    context.Result = new BadRequestObjectResult(error);
+                    LogFailureResult(actionResult.Result, context
+                        .HttpContext
+                        .RequestServices
+                        .GetRequiredService<ILogger<ErrorableResultFilterAttribute>>());
+
+                    return;
+                }
+
+                if (context.HttpContext.Request.Method == "DELETE")
+                {
+                    context.Result = new NoContentResult();
+
+                    return;
+                }
+
+                if (actionResult.Result is IResult<object> objectResult)
+                    context.Result = new OkObjectResult(objectResult.Data);
+                else
+                    context.Result = new OkResult();
+            }
+        }
+```
+
 #### DummyWebApp.DAL
 This Data Access Layer in Multitier architecture. It includes the data persistence mechanisms (database servers, file shares, etc.) and the data access layer that encapsulates the persistence mechanisms and exposes the data. It uses EF Core and **ApplicationDbContext** as contex of DB. Also this project contains DbSeeder class that is responsible for DB seeding and Entities folder where are DB entities are located.
 
