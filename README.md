@@ -13,7 +13,7 @@ This is API (.NET 5 WEB API) project that already contains Swagger documentation
 
 #### DummyWebApp.BLL
 This project represents Application Layer, that controls an application’s functionality by performing detailed processing. It contains busines services, DTOs, validation attributes, ect. Each services returns IResult or IResult<T> interface, that mean that anyone service will never throw exception and result information is wrapped in result model. It is very useful in Presentation layer (API project) for error handling and logging. 
-`IResult` implementation
+##### `IResult` implementation
 ```csharp
     public interface IResult
     {
@@ -25,7 +25,7 @@ This project represents Application Layer, that controls an application’s func
     }
 ```
 
-`IResult<T>` implementation
+##### `IResult<T>` implementation
 ```csharp
     public interface IResult<out TData> : IResult
     {
