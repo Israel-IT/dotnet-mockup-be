@@ -17,7 +17,7 @@ This project represents Application Layer, that controls an application’s func
     }
 ```
 
-`IResult<T> ` implementation
+`IResult<T>` implementation
 ```csharp
     public interface IResult<out TData> : IResult
     {
