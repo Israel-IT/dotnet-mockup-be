@@ -35,7 +35,9 @@ namespace DummyWebApp.Tests.ServicesTests
                 {
                     Audience = Guid.NewGuid().ToString(),
                     Issuer = Guid.NewGuid().ToString(),
-                    Key = Guid.NewGuid().ToString()
+                    Key = Guid.NewGuid().ToString(),
+                    AccessTokenLifetime = 4320,
+                    RefreshTokenLifetime = 43200
                 });
             passHasherMock
                 .Setup(hasher => hasher.VerifyHashedPassword(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
@@ -62,11 +64,11 @@ namespace DummyWebApp.Tests.ServicesTests
                 optionsMock.Object);
         }
 
-        [InlineData("test@gmail.com", "testPass")]
-        [InlineData("test2@gmail.com", "testPass2")]
-        [InlineData("test3@gmail.com", "testPass3")]
+        [InlineData("test@gmail.com", "testPass", 1)]
+        [InlineData("test2@gmail.com", "testPass2", 2)]
+        [InlineData("test3@gmail.com", "testPass3", 3)]
         [Theory]
-        public async Task ShouldGenerateTokenForUser(string email, string password)
+        public async Task ShouldGenerateTokenForUser(string email, string password, int id)
         {
             var users = new List<User>
             {
@@ -74,7 +76,7 @@ namespace DummyWebApp.Tests.ServicesTests
                 {
                     Email = email,
                     PasswordHash = password,
-                    Id = new Random().Next(1, 100)
+                    Id = id
                 }
             };
             var usersMock = users.AsQueryable().BuildMock();
@@ -89,11 +91,11 @@ namespace DummyWebApp.Tests.ServicesTests
             Assert.NotNull(tokenResult.Data.RefreshToken);
         }
         
-        [InlineData("test@gmail.com", "testPass")]
-        [InlineData("test2@gmail.com", "testPass2")]
-        [InlineData("test3@gmail.com", "testPass3")]
+        [InlineData("test@gmail.com", "testPass", 1)]
+        [InlineData("test2@gmail.com", "testPass2", 2)]
+        [InlineData("test3@gmail.com", "testPass3", 3)]
         [Theory]
-        public async Task ShouldRefreshToken(string email, string password)
+        public async Task ShouldRefreshToken(string email, string password, int id)
         {
             var users = new List<User>
             {
@@ -101,7 +103,7 @@ namespace DummyWebApp.Tests.ServicesTests
                 {
                     Email = email,
                     PasswordHash = password,
-                    Id = new Random().Next(1, 100)
+                    Id = id
                 }
             };
             var usersMock = users.AsQueryable().BuildMock();
@@ -117,11 +119,11 @@ namespace DummyWebApp.Tests.ServicesTests
             Assert.NotNull(refreshResult.Data.RefreshToken);
         }
         
-        [InlineData("test@gmail.com", "testPass")]
-        [InlineData("test2@gmail.com", "testPass2")]
-        [InlineData("test3@gmail.com", "testPass3")]
+        [InlineData("test@gmail.com", "testPass", 1)]
+        [InlineData("test2@gmail.com", "testPass2", 2)]
+        [InlineData("test3@gmail.com", "testPass3", 3)]
         [Theory]
-        public async Task ShouldNotRefreshTokenWithInvalidRefreshToken(string email, string password)
+        public async Task ShouldNotRefreshTokenWithInvalidRefreshToken(string email, string password, int id)
         {
             var users = new List<User>
             {
@@ -129,7 +131,7 @@ namespace DummyWebApp.Tests.ServicesTests
                 {
                     Email = email,
                     PasswordHash = password,
-                    Id = new Random().Next(1, 100)
+                    Id = id
                 }
             };
             var usersMock = users.AsQueryable().BuildMock();
@@ -142,11 +144,11 @@ namespace DummyWebApp.Tests.ServicesTests
             Assert.False(refreshResult.Success);
         }
 
-        [InlineData("test@gmail.com", "testPass")]
-        [InlineData("test2@gmail.com", "testPass2")]
-        [InlineData("test3@gmail.com", "testPass3")]
+        [InlineData("test@gmail.com", "testPass", 1)]
+        [InlineData("test2@gmail.com", "testPass2", 2)]
+        [InlineData("test3@gmail.com", "testPass3", 3)]
         [Theory]
-        public async Task ShouldRegisterNewUser(string email, string password)
+        public async Task ShouldRegisterNewUser(string email, string password, int id)
         {
             var users = new List<User>
             {
@@ -154,7 +156,7 @@ namespace DummyWebApp.Tests.ServicesTests
                 {
                     Email = Guid.NewGuid().ToString(),
                     PasswordHash = Guid.NewGuid().ToString(),
-                    Id = new Random().Next(1, 100)
+                    Id = id
                 }
             };
             var usersMock = users.AsQueryable().BuildMock();
