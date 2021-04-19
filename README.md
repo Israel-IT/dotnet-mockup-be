@@ -1,5 +1,9 @@
 # dotnet-mockup-be
 
+This is a mock-up project, that will help you to create project from scratch. You will need just changed DB provider (by default it uses PostgreSQL) and some configurations like: JWT token lifetime, email credentials etc.
+#### Notes
+This project uses `StyleCop.Analyzer` library that will help you stick to C# code convention, but **Resharper** should be enabled in your IDE. All rules is located in `/Solution.ruleset` ruleset file.
+More information about this library you can find [here](https://github.com/DotNetAnalyzers/StyleCopAnalyzers "here")
 ### DummyWebApp
 This is API (.NET 5 WEB API) project that already contains Swagger documentation with XML supporting, JWT based auth, error filter. Also this project has implemented localization with **en** and **uk** languages. All localization files are in /DummyWebApp/Resolurces folder, localization also supports anotation. This project is the higher layer in Multitier architecture.
 
