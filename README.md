@@ -81,3 +81,14 @@ This Data Access Layer in Multitier architecture. It includes the data persisten
 
 #### DummyWebApp.Tests
 This **xUnit** porject that contains unit tests. It already has few unit tests implementaion: `AuthServiceTests` and `ResetPasswordTokenProviderTests`.
+
+#### Environment variables
+In addition to `appsettings.json` configuration file, project uses `.env` files for configuration. For example `config.Development.env`. This file contains environment variables. If you want to use another environment, you will need just create another .env file with name of your environment.
+##### Environment file schema
+*{config}.{EnvironmentName}.env*
+
+*{EnvironmentName}*- name of app environment (Production, Development).
+
+*{config}* - constant name
+##### Environment variables
+- **CONNECTION_STRING** - connection string for DB.
