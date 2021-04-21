@@ -87,7 +87,7 @@ In addition to `appsettings.json` configuration file, project uses `.env` files 
 ##### Environment file schema
 *{config}.{EnvironmentName}.env*
 
-*{EnvironmentName}*- name of app environment (Production, Development).
+*{EnvironmentName}* - name of app environment (Production, Development).
 
 *{config}* - constant name
 ##### Environment variables
