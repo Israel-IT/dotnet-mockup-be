@@ -36,7 +36,7 @@ This project represents Application Layer, that controls an application’s func
 ##### Implementation of `ErrorableResultFilterAttribute` that uses `IResult` and `IResult<T>`
 
 ```csharp
-ublic class ErrorableResultFilterAttribute : ResultFilterAttribute
+public class ErrorableResultFilterAttribute : ResultFilterAttribute
     {
         private const string Errors = nameof(Errors);
 
