@@ -35,7 +35,8 @@ namespace DummyWebApp
             services
                 .AddScoped<DbSeeder>()
                 .AddDbContext<ApplicationDbContext>((provider, builder) =>
-                    builder.UseNpgsql(EnvironmentExtensions.GetValueOrThrow<string>("CONNECTION_STRING"))
+                    builder
+                        .UseNpgsql(EnvironmentExtensions.GetValueOrThrow<string>("CONNECTION_STRING"))
                         .UseLoggerFactory(LoggerFactory.Create(loggingBuilder =>
                         {
                             if (provider.GetRequiredService<IWebHostEnvironment>().IsDevelopment())

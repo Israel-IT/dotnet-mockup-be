@@ -21,7 +21,7 @@ namespace DummyWebApp.DAL
 
         public async Task SeedAsync()
         {
-            await _applicationDbContext.Database.EnsureCreatedAsync();
+            await _applicationDbContext.Database.MigrateAsync();
 
             if (_hostEnvironment.IsDevelopment() && !await _applicationDbContext.Users.AnyAsync())
             {
